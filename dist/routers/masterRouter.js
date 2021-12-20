@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const userRouter = require("./userRouter");
 const roleRouter = require("./roleRouter");
 const taskRouter = require("./taskRouter");
+const projectRouter = require("./projectRouter");
 class MasterRouter extends baseRouter_1.BaseRouter {
     constructor() {
         super();
@@ -30,6 +31,7 @@ class MasterRouter extends baseRouter_1.BaseRouter {
         this.router.use("/User", userRouter);
         this.router.use('/Role', roleRouter);
         this.router.use('/Task', taskRouter);
+        this.router.use('/Project', projectRouter);
     }
 }
 module.exports = new MasterRouter().router;

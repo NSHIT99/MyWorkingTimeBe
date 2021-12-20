@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 const mongoose_1 = require("mongoose");
 const userModel_1 = require("../models/userModel");
 const baseRepository_1 = require("./baseRepository");
+const projectUserRepository_1 = __importDefault(require("./projectUserRepository"));
 class UserRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super("User", userModel_1.UserSchema);
@@ -49,6 +53,56 @@ class UserRepository extends baseRepository_1.BaseRepository {
                     .skip(skip)
                     .limit(max);
                 return user;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    changeAvatar(id, path) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield userModel_1.User.updateOne({ id }, { avatarPath: path });
+                return this.findById(id);
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    updatePass(userId, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield userModel_1.User.updateOne({ id: userId }, { password: newPassword });
+                return yield this.findById(userId);
+            }
+            catch (error) { }
+        });
+    }
+    findRoleName() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let roleName = yield userModel_1.User.findOne({ roleNames: "Admin" });
+                return roleName;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    getManageProject(projectId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let member = yield projectUserRepository_1.default.findByProjectId(projectId);
+                let pms = [];
+                member = member.filter(function (members) {
+                    return members.type == 1;
+                });
+                for (let item of member) {
+                    let user = yield this.findById(item.userId);
+                    pms.push(user.fullName);
+                }
+                return pms;
             }
             catch (error) {
                 throw error;

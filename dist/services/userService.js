@@ -182,6 +182,70 @@ class UserService {
                 next(error);
             }
         });
+        this.updateAvatar = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            let path = req.file.path.slice(6);
+            let userId = req.body.userId;
+            let response = {
+                result: null,
+                targetUrl: null,
+                success: false,
+                error: null,
+                unAuthRequest: false,
+                __abp: true,
+            };
+            try {
+                if (yield this.userRepository.findById(userId)) {
+                    yield this.userRepository.changeAvatar(userId, path);
+                    response = Object.assign(Object.assign({}, response), { result: path, success: true });
+                    res.status(200).json(response);
+                }
+                else {
+                    response = Object.assign(Object.assign({}, response), { result: null, error: {
+                            code: 0,
+                            details: null,
+                            message: `No file upload!!`,
+                            validationErrors: null,
+                        }, success: false });
+                    res.status(500).json(response);
+                }
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+        this.resetPassword = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            const { userId, adminPassword, newPassword } = req.body;
+            let response = {
+                result: null,
+                targetUrl: null,
+                success: false,
+                error: null,
+                unAuthRequest: false,
+                __abp: true,
+            };
+            try {
+                yield this.userRepository.findById(parseInt(userId));
+                let admin = yield this.userRepository.findRoleName();
+                if (yield bcryptjs_1.default.compare(adminPassword, admin.password)) {
+                    const hash = yield bcryptjs_1.default.hash(newPassword, 10);
+                    yield this.userRepository.updatePass(userId, hash);
+                    response = Object.assign(Object.assign({}, response), { result: true, success: true });
+                }
+                else {
+                    response = Object.assign(Object.assign({}, response), { error: {
+                            code: 0,
+                            message: `Your request is not valid!`,
+                            details: null,
+                            validationErrors: null,
+                        } });
+                }
+                ;
+                res.status(200).json(response);
+            }
+            catch (error) {
+                next(error);
+            }
+        });
     }
     defaultMethod(req, res, next) {
         throw new Error("Method not implemented.");

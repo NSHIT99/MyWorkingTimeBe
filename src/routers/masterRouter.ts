@@ -4,6 +4,7 @@ import bodyParser = require("body-parser");
 import userRouter = require("./userRouter");
 import roleRouter = require("./roleRouter");
 import taskRouter = require("./taskRouter");
+import projectRouter = require("./projectRouter");
 
 class MasterRouter extends BaseRouter {
   constructor() {
@@ -31,6 +32,7 @@ class MasterRouter extends BaseRouter {
     this.router.use("/User", userRouter);
     this.router.use('/Role', roleRouter);
     this.router.use('/Task', taskRouter);
+    this.router.use('/Project', projectRouter);
   }
 }
 

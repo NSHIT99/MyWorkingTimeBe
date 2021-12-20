@@ -25,4 +25,4 @@ function authorize(roles = []) {
     catch (error) { }
 }
 exports.authorize = authorize;
-//# sourceMappingURL=Authorize.js.map
+//# sourceMappingURL=authorize.js.map

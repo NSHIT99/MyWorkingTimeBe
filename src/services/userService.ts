@@ -221,5 +221,84 @@ class UserService implements IService {
       next(error);
     }
   };
+
+  updateAvatar = async (req: Request, res: Response, next: NextFunction) => {
+    let path = req.file.path.slice(6);
+    let userId = req.body.userId;
+    let response: IResponse = {
+      result: null,
+      targetUrl: null,
+      success: false,
+      error: null,
+      unAuthRequest: false,
+      __abp: true,
+    };
+
+    try {
+      if (await this.userRepository.findById(userId)) {
+        await this.userRepository.changeAvatar(userId, path);
+        response = {
+          ...response,
+          result: path,
+          success: true,
+        };
+        res.status(200).json(response);
+      } else {
+        response = {
+          ...response,
+          result: null,
+          error: {
+            code: 0,
+            details: null,
+            message: `No file upload!!`,
+            validationErrors: null,
+          },
+          success: false,
+        };
+        res.status(500).json(response);
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+    const { userId, adminPassword, newPassword } = req.body;
+    let response: IResponse = {
+      result: null,
+      targetUrl: null,
+      success: false,
+      error: null,
+      unAuthRequest: false,
+      __abp: true,
+    };
+    try {
+      await this.userRepository.findById(parseInt(userId));
+      let admin = await this.userRepository.findRoleName();
+      if (await bcryptjs.compare(adminPassword, admin.password)) {
+        const hash = await bcryptjs.hash(newPassword, 10);
+        await this.userRepository.updatePass(userId, hash);
+        response = {
+          ...response,
+          result: true,
+          success: true,
+        };
+      }
+      else {
+        response = {
+          ...response,
+          error: {
+            code: 0,
+            message: `Your request is not valid!`,
+            details: null,
+            validationErrors: null,
+          },
+        }
+      };
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 export = new UserService();

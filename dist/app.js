@@ -35,7 +35,7 @@ class Application {
         this.server = new server_1.Server();
     }
     start() {
-        ((port = process.env.APP_PORT || 5000) => {
+        ((port = process.env.APP_PORT || 5001) => {
             this.server.app.use(cors());
             this.server.app.listen(port, () => console.log(`> Listening on port ${port}`));
             this.server.app.use("/api", this.server.router);

@@ -32,6 +32,7 @@ import { ParsedQs } from "qs";
     User.find({ userName: userNameOrEmailAddress })
       .exec()
       .then((users) => {
+        
         if (users.length !== 1) {
           response = {
             ...response,
