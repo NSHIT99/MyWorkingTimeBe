@@ -90,6 +90,17 @@ class UserRepository extends baseRepository_1.BaseRepository {
             }
         });
     }
+    findUserNotPagging() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let findUser = yield userModel_1.User.find().select("id fullName type branch avatarPath");
+                return findUser;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
     getManageProject(projectId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

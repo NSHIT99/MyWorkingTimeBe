@@ -11,6 +11,7 @@ import { GetAllPaggingReqDTO } from "../dto/request/getAllPaggingReqDTO";
 import { GetAllPaggingResDTO } from "../dto/response/getAll/getAllPaggingResDTO";
 import { GetAllUserResDTO } from "../dto/response/getAll/getAllUserResDTO";
 import { IResponse } from "../interfaces/responseInterface";
+import { GetAllUserNotPaggingResDTO } from "../dto/response/getAll/getAllUserNotPagging";
 
 class UserService implements IService {
   roleRepository: any;
@@ -85,6 +86,7 @@ class UserService implements IService {
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     let user: UserDTO = req.body;
+    user.fullName = `${user.surname} ${user.name}`;
     let response: GetUserResDTO = {
       result: null,
       targetUrl: null,
@@ -95,30 +97,28 @@ class UserService implements IService {
     };
     try {
       await this.userRepository.findById(user.id);
-      if (await this.userRepository.findById(user.id)) {
-        let updateUser = await this.userRepository.update(user);
-        updateUser = get(updateUser, [
-          "id",
-          "userName",
-          "emailAddress",
-          "name",
-          "surname",
-          "fullName",
-          "address",
-          "phoneNumber",
-          "roleNames",
-          "avatarPath",
-          "type",
-          "branch",
-          "sex",
-        ]);
-        response = {
-          ...response,
-          result: updateUser,
-          success: true,
-        };
-        res.status(200).json(response);
-      }
+      let updateUser = await this.userRepository.update(user);
+      updateUser = get(updateUser, [
+        "id",
+        "userName",
+        "emailAddress",
+        "name",
+        "surname",
+        "fullName",
+        "address",
+        "phoneNumber",
+        "roleNames",
+        "avatarPath",
+        "type",
+        "branch",
+        "sex",
+      ]);
+      response = {
+        ...response,
+        result: updateUser,
+        success: true,
+      };
+      res.status(200).json(response);
     } catch (error) {
       next(error);
     }
@@ -192,6 +192,29 @@ class UserService implements IService {
           totalCount: paggingUser.length,
           items: result,
         },
+      };
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getUserNotPagging = async (req: Request, res: Response, next: NextFunction) => {
+    let response: GetAllUserNotPaggingResDTO = {
+      result: null,
+      targetUrl: null,
+      success: false,
+      error: null,
+      unAuthRequest: false,
+      __abp: true,
+    };
+
+    try {
+      let user = await this.userRepository.findUserNotPagging();
+      response = {
+        ...response,
+        result: user,
+        success: true,
       };
       res.status(200).json(response);
     } catch (error) {
@@ -283,8 +306,7 @@ class UserService implements IService {
           result: true,
           success: true,
         };
-      }
-      else {
+      } else {
         response = {
           ...response,
           error: {
@@ -293,8 +315,8 @@ class UserService implements IService {
             details: null,
             validationErrors: null,
           },
-        }
-      };
+        };
+      }
       res.status(200).json(response);
     } catch (error) {
       next(error);

@@ -36,6 +36,7 @@ class TaskService implements IService {
         if (edit) {
           let updateTask = await edit.update({
             name: task.name,
+            type: task.type,
           });
           response = {
             ...response,

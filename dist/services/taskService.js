@@ -32,6 +32,7 @@ class TaskService {
                     if (edit) {
                         let updateTask = yield edit.update({
                             name: task.name,
+                            type: task.type,
                         });
                         response = Object.assign(Object.assign({}, response), { success: true, result: updateTask });
                         res.status(200).json(response);

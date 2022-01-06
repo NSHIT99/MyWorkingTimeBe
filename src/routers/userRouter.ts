@@ -19,12 +19,13 @@ class UserRouter extends BaseRouter {
    */
   protected init() {
     this.router.post("/CreateUser", this.userService.createUser);
-    this.router.put("/UpdateUser/:id", this.userService.updateUser);
+    this.router.put("/UpdateUser", this.userService.updateUser);
     this.router.delete("/DeleteUser", this.userService.deleteUser);
     this.router.get("/GetAllPagging", this.userService.getAllPagging);
     this.router.get("/GetAll", this.userService.getAll);
     this.router.post('/UpdateAvatar', uploadOne, this.userService.updateAvatar);
     this.router.post("/ResetPassword", this.userService.resetPassword);
+    this.router.get('/GetUserNotPagging', this.userService.getUserNotPagging);
   }
 }
 

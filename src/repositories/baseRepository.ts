@@ -71,7 +71,6 @@ export class BaseRepository<T extends IBase> implements IMethod<T>, IModel<T> {
     } catch (error) {}
   }
 
-  
   public async SaveAndUpdate(item: T): Promise<T> {
     try {
       await this.model.updateOne({ id: item.id }, item);
@@ -80,5 +79,4 @@ export class BaseRepository<T extends IBase> implements IMethod<T>, IModel<T> {
       throw error;
     }
   }
-
 }

@@ -3,15 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Branch = exports.Sex = exports.UserType = void 0;
 var UserType;
 (function (UserType) {
-    UserType[UserType["none"] = 0] = "none";
-    UserType[UserType["Leader"] = 1] = "Leader";
-    UserType[UserType["Member"] = 2] = "Member";
-    UserType[UserType["Manager"] = 3] = "Manager";
+    UserType[UserType["Nh\u00F3m tr\u01B0\u1EDFng"] = 0] = "Nh\u00F3m tr\u01B0\u1EDFng";
+    UserType[UserType["Gi\u00E1o vi\u00EAn ph\u1EE5 tr\u00E1ch"] = 1] = "Gi\u00E1o vi\u00EAn ph\u1EE5 tr\u00E1ch";
+    UserType[UserType["Th\u00E0nh vi\u00EAn"] = 2] = "Th\u00E0nh vi\u00EAn";
 })(UserType = exports.UserType || (exports.UserType = {}));
 var Sex;
 (function (Sex) {
-    Sex[Sex["Male"] = 0] = "Male";
-    Sex[Sex["Female"] = 1] = "Female";
+    Sex[Sex["Nam"] = 0] = "Nam";
+    Sex[Sex["N\u1EEF"] = 1] = "N\u1EEF";
 })(Sex = exports.Sex || (exports.Sex = {}));
 var Branch;
 (function (Branch) {

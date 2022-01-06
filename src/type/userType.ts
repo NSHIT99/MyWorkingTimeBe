@@ -1,13 +1,12 @@
 export enum UserType {
-  none,
-  Leader,
-  Member,
-  Manager,
+  "Nhóm trưởng",
+  "Giáo viên phụ trách",
+  "Thành viên",
 }
 
 export enum Sex {
-  Male,
-  Female,
+  "Nam",
+  "Nữ",
 }
 
 export enum Branch {

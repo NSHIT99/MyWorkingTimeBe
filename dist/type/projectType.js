@@ -8,14 +8,14 @@ var ProjectStatus;
 })(ProjectStatus = exports.ProjectStatus || (exports.ProjectStatus = {}));
 var ProjectType;
 (function (ProjectType) {
-    ProjectType[ProjectType["Internship project"] = 0] = "Internship project";
-    ProjectType[ProjectType["Specialized projects"] = 1] = "Specialized projects";
-    ProjectType[ProjectType["Final project"] = 2] = "Final project";
+    ProjectType[ProjectType["\u0110\u1ED3 \u00E1n th\u1EF1c t\u1EADp"] = 0] = "\u0110\u1ED3 \u00E1n th\u1EF1c t\u1EADp";
+    ProjectType[ProjectType["\u0110\u1ED3 \u00E1n chuy\u00EAn ng\u00E0nh"] = 1] = "\u0110\u1ED3 \u00E1n chuy\u00EAn ng\u00E0nh";
+    ProjectType[ProjectType["\u0110\u1ED3 \u00E1n t\u1ED1t nghi\u1EC7p"] = 2] = "\u0110\u1ED3 \u00E1n t\u1ED1t nghi\u1EC7p";
 })(ProjectType = exports.ProjectType || (exports.ProjectType = {}));
 var MemberType;
 (function (MemberType) {
-    MemberType[MemberType["Member"] = 0] = "Member";
-    MemberType[MemberType["Project Manager"] = 1] = "Project Manager";
-    MemberType[MemberType["Deactive"] = 2] = "Deactive";
+    MemberType[MemberType["Sinh Vi\u00EAn"] = 0] = "Sinh Vi\u00EAn";
+    MemberType[MemberType["Gi\u1EA3ng vi\u00EAn"] = 1] = "Gi\u1EA3ng vi\u00EAn";
+    MemberType[MemberType["Nh\u00F3m tr\u01B0\u1EDFng"] = 2] = "Nh\u00F3m tr\u01B0\u1EDFng";
 })(MemberType = exports.MemberType || (exports.MemberType = {}));
 //# sourceMappingURL=projectType.js.map

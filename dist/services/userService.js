@@ -69,6 +69,7 @@ class UserService {
         });
         this.updateUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             let user = req.body;
+            user.fullName = `${user.surname} ${user.name}`;
             let response = {
                 result: null,
                 targetUrl: null,
@@ -79,26 +80,24 @@ class UserService {
             };
             try {
                 yield this.userRepository.findById(user.id);
-                if (yield this.userRepository.findById(user.id)) {
-                    let updateUser = yield this.userRepository.update(user);
-                    updateUser = (0, get_1.default)(updateUser, [
-                        "id",
-                        "userName",
-                        "emailAddress",
-                        "name",
-                        "surname",
-                        "fullName",
-                        "address",
-                        "phoneNumber",
-                        "roleNames",
-                        "avatarPath",
-                        "type",
-                        "branch",
-                        "sex",
-                    ]);
-                    response = Object.assign(Object.assign({}, response), { result: updateUser, success: true });
-                    res.status(200).json(response);
-                }
+                let updateUser = yield this.userRepository.update(user);
+                updateUser = (0, get_1.default)(updateUser, [
+                    "id",
+                    "userName",
+                    "emailAddress",
+                    "name",
+                    "surname",
+                    "fullName",
+                    "address",
+                    "phoneNumber",
+                    "roleNames",
+                    "avatarPath",
+                    "type",
+                    "branch",
+                    "sex",
+                ]);
+                response = Object.assign(Object.assign({}, response), { result: updateUser, success: true });
+                res.status(200).json(response);
             }
             catch (error) {
                 next(error);
@@ -158,6 +157,24 @@ class UserService {
                         totalCount: paggingUser.length,
                         items: result,
                     } });
+                res.status(200).json(response);
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+        this.getUserNotPagging = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            let response = {
+                result: null,
+                targetUrl: null,
+                success: false,
+                error: null,
+                unAuthRequest: false,
+                __abp: true,
+            };
+            try {
+                let user = yield this.userRepository.findUserNotPagging();
+                response = Object.assign(Object.assign({}, response), { result: user, success: true });
                 res.status(200).json(response);
             }
             catch (error) {
@@ -239,7 +256,6 @@ class UserService {
                             validationErrors: null,
                         } });
                 }
-                ;
                 res.status(200).json(response);
             }
             catch (error) {

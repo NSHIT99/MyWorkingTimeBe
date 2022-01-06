@@ -65,7 +65,7 @@ class UserRepository extends BaseRepository<IUser> {
       throw error;
     }
   }
-  
+
   public async updatePass(userId: number, newPassword: string): Promise<IUser> {
     try {
       await User.updateOne({ id: userId }, { password: newPassword });
@@ -81,7 +81,16 @@ class UserRepository extends BaseRepository<IUser> {
       throw error;
     }
   }
-  
+
+  public async findUserNotPagging() {
+    try {
+      let findUser = await User.find().select("id fullName type branch avatarPath");
+      return findUser;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async getManageProject(projectId: number) {
     try {
       let member = await projectUserRepository.findByProjectId(projectId);

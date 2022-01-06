@@ -4,13 +4,13 @@ export enum ProjectStatus {
 }
 
 export enum ProjectType {
-  "Internship project",
-  "Specialized projects",
-  "Final project",
+  "Đồ án thực tập",
+  "Đồ án chuyên ngành",
+  "Đồ án tốt nghiệp",
 }
 
 export enum MemberType {
-  "Member",
-  "Project Manager",
-  "Deactive",
+  "Sinh Viên",
+  "Giảng viên",
+  "Nhóm trưởng",
 }
