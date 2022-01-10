@@ -12,5 +12,4 @@ export interface IProject extends IBase, Document {
   projectType: ProjectType;
   customerId: number;
   note: string;
-  isAllUserBelongTo: boolean;
 }

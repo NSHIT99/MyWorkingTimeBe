@@ -5,6 +5,8 @@ import userRouter = require("./userRouter");
 import roleRouter = require("./roleRouter");
 import taskRouter = require("./taskRouter");
 import projectRouter = require("./projectRouter");
+import myworkingtimeRouter = require("./myworkingtimeRouter");
+import workingtimeRouter = require("./workingtimeRouter");
 
 class MasterRouter extends BaseRouter {
   constructor() {
@@ -33,6 +35,8 @@ class MasterRouter extends BaseRouter {
     this.router.use('/Role', roleRouter);
     this.router.use('/Task', taskRouter);
     this.router.use('/Project', projectRouter);
+    this.router.use('/Myworkingtime', myworkingtimeRouter);
+    this.router.use('/Workingtime', workingtimeRouter);
   }
 }
 

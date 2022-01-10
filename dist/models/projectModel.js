@@ -20,9 +20,7 @@ exports.ProjectSchema = new mongoose_1.Schema({
     timeStart: { type: Date, default: Date.now },
     timeEnd: { type: Date, default: Date.now },
     projectType: { type: projectType_1.ProjectType, enum: Object.values(projectType_1.ProjectType) },
-    customerId: { type: Number },
     note: { type: String, default: null },
-    isAllUserBelongTo: { type: Boolean },
     id: { type: Number, require: true, unique: true },
 }, {
     timestamps: true,

@@ -53,7 +53,6 @@ class ProjectService {
                             "code",
                             "projectType",
                             "customerId",
-                            "isAllUserBelongTo",
                             "id",
                             "timeStart",
                             "timeEnd",
@@ -93,7 +92,6 @@ class ProjectService {
                             "code",
                             "projectType",
                             "customerId",
-                            "isAllUserBelongTo",
                             "id",
                             "timeStart",
                             "timeEnd",
@@ -250,7 +248,6 @@ class ProjectService {
                     "projectType",
                     "customerId",
                     "id",
-                    "isAllUserBelongTo",
                 ]);
                 response.success = true;
                 response.result = Object.assign(Object.assign({}, project), { tasks: tasks.map((task) => {

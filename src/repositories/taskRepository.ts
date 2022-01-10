@@ -44,6 +44,7 @@ class TaskRepository extends BaseRepository<ITask> {
       throw error;
     }
   }
+  
   public async deArchiveTask(id: number) {
     const task = await Task.findOne({
       id: id,

@@ -13,9 +13,7 @@ export const ProjectSchema: Schema = new Schema(
     timeStart: { type: Date, default: Date.now },
     timeEnd: { type: Date, default: Date.now },
     projectType: { type: ProjectType, enum: Object.values(ProjectType) },
-    customerId: { type: Number },
     note: { type: String, default: null },
-    isAllUserBelongTo: { type: Boolean },
     id: { type: Number, require: true, unique: true },
   },
   {

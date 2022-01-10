@@ -20,6 +20,5 @@ export interface GetProjectResDTO extends IResponse {
       id: number;
     }[];
     note: string;
-    isAllUserBelongTo: boolean;
   };
 }
