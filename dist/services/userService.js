@@ -14,9 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const userRepository_1 = __importDefault(require("../repositories/userRepository"));
 const get_1 = __importDefault(require("../middleware/get"));
+const avatarRepository_1 = __importDefault(require("../repositories/avatarRepository"));
 class UserService {
     constructor() {
         this.userRepository = userRepository_1.default;
+        this.avatarRepository = avatarRepository_1.default;
         this.default = (req, res, next) => { };
         this.createUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
             let user = req.body;
@@ -256,6 +258,35 @@ class UserService {
                             validationErrors: null,
                         } });
                 }
+                res.status(200).json(response);
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+        this.createAvatar = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            const file = req.file;
+            let response = {
+                result: null,
+                targetUrl: null,
+                success: false,
+                error: null,
+                unAuthRequest: false,
+                __abp: true,
+            };
+            try {
+                let newAvatar = yield this.avatarRepository.createAvatar(file.fieldname, file.originalname, file.encoding, file.mimetype, file.destination, file.filename, file.path, file.size);
+                newAvatar = (0, get_1.default)(newAvatar, [
+                    "file.fieldname",
+                    "file.originalname",
+                    "file.encoding",
+                    "file.mimetype",
+                    "file.destination",
+                    "file.filename",
+                    "file.path",
+                    "file.size",
+                ]);
+                response = Object.assign(Object.assign({}, response), { result: newAvatar, success: true });
                 res.status(200).json(response);
             }
             catch (error) {

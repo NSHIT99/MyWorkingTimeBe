@@ -1,7 +1,7 @@
 import { authen } from "../middleware/Authen";
+import { mp3 } from "../middleware/uploadFile";
 import userService from "../services/userService";
 import { BaseRouter } from "./baseRouter";
-import { uploadOne } from '../middleware/uploadFile';
 
 /**
  * @description UserRouter
@@ -23,9 +23,14 @@ class UserRouter extends BaseRouter {
     this.router.delete("/DeleteUser", this.userService.deleteUser);
     this.router.get("/GetAllPagging", this.userService.getAllPagging);
     this.router.get("/GetAll", this.userService.getAll);
-    this.router.post('/UpdateAvatar', uploadOne, this.userService.updateAvatar);
+    this.router.post(
+      "/createAvatar",
+      mp3.single("File"),
+      this.userService.createAvatar
+    );
+    this.router.post("/UpdateAvatar", this.userService.updateAvatar);
     this.router.post("/ResetPassword", this.userService.resetPassword);
-    this.router.get('/GetUserNotPagging', this.userService.getUserNotPagging);
+    this.router.get("/GetUserNotPagging", this.userService.getUserNotPagging);
   }
 }
 

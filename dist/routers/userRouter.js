@@ -2,9 +2,9 @@
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+const uploadFile_1 = require("../middleware/uploadFile");
 const userService_1 = __importDefault(require("../services/userService"));
 const baseRouter_1 = require("./baseRouter");
-const uploadFile_1 = require("../middleware/uploadFile");
 /**
  * @description UserRouter
  */
@@ -23,9 +23,10 @@ class UserRouter extends baseRouter_1.BaseRouter {
         this.router.delete("/DeleteUser", this.userService.deleteUser);
         this.router.get("/GetAllPagging", this.userService.getAllPagging);
         this.router.get("/GetAll", this.userService.getAll);
-        this.router.post('/UpdateAvatar', uploadFile_1.uploadOne, this.userService.updateAvatar);
+        this.router.post("/createAvatar", uploadFile_1.mp3.single("File"), this.userService.createAvatar);
+        this.router.post("/UpdateAvatar", this.userService.updateAvatar);
         this.router.post("/ResetPassword", this.userService.resetPassword);
-        this.router.get('/GetUserNotPagging', this.userService.getUserNotPagging);
+        this.router.get("/GetUserNotPagging", this.userService.getUserNotPagging);
     }
 }
 module.exports = new UserRouter().router;

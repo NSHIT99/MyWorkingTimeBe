@@ -12,6 +12,7 @@ import { GetAllPaggingResDTO } from "../dto/response/getAll/getAllPaggingResDTO"
 import { GetAllUserResDTO } from "../dto/response/getAll/getAllUserResDTO";
 import { IResponse } from "../interfaces/responseInterface";
 import { GetAllUserNotPaggingResDTO } from "../dto/response/getAll/getAllUserNotPagging";
+import avatarRepository from "../repositories/avatarRepository";
 
 class UserService implements IService {
   roleRepository: any;
@@ -23,6 +24,7 @@ class UserService implements IService {
     throw new Error("Method not implemented.");
   }
   private userRepository = userRepository;
+  private avatarRepository = avatarRepository;
   default = (req: Request, res: Response, next: NextFunction) => {};
 
   createUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -199,7 +201,11 @@ class UserService implements IService {
     }
   };
 
-  getUserNotPagging = async (req: Request, res: Response, next: NextFunction) => {
+  getUserNotPagging = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     let response: GetAllUserNotPaggingResDTO = {
       result: null,
       targetUrl: null,
@@ -317,6 +323,48 @@ class UserService implements IService {
           },
         };
       }
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  createAvatar = async (req: Request, res: Response, next: NextFunction) => {
+    const file = req.file;
+    let response: IResponse = {
+      result: null,
+      targetUrl: null,
+      success: false,
+      error: null,
+      unAuthRequest: false,
+      __abp: true,
+    };
+    try {
+      let newAvatar = await this.avatarRepository.createAvatar(
+        file.fieldname,
+        file.originalname,
+        file.encoding,
+        file.mimetype,
+        file.destination,
+        file.filename,
+        file.path,
+        file.size
+      );
+      newAvatar = get(newAvatar, [
+        "file.fieldname",
+        "file.originalname",
+        "file.encoding",
+        "file.mimetype",
+        "file.destination",
+        "file.filename",
+        "file.path",
+        "file.size",
+      ]);
+      response = {
+        ...response,
+        result: newAvatar,
+        success: true,
+      };
       res.status(200).json(response);
     } catch (error) {
       next(error);
