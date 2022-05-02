@@ -16,6 +16,7 @@ const signJWT = (user, callback) => {
         jsonwebtoken_1.default.sign({
             username: user.userName,
             role: user.roleNames,
+            id: user.id,
         }, config_1.default.server.token.secret, {
             issuer: config_1.default.server.token.issuer,
             algorithm: "HS256",

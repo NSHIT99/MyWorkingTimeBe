@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeOfWork = exports.status = void 0;
 var status;
 (function (status) {
-    status[status["All"] = 0] = "All";
+    status[status["Ch\u01B0a g\u1EEDi"] = 0] = "Ch\u01B0a g\u1EEDi";
     status[status["Ch\u01B0a x\u00E1c nh\u1EADn"] = 1] = "Ch\u01B0a x\u00E1c nh\u1EADn";
     status[status["X\u00E1c nh\u1EADn"] = 2] = "X\u00E1c nh\u1EADn";
     status[status["Lo\u1EA1i b\u1ECF"] = 3] = "Lo\u1EA1i b\u1ECF";

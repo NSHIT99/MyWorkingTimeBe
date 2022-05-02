@@ -64,7 +64,6 @@ class ProjectService implements IService {
             "name",
             "code",
             "projectType",
-            "customerId",
             "id",
             "timeStart",
             "timeEnd",
@@ -114,7 +113,6 @@ class ProjectService implements IService {
             "name",
             "code",
             "projectType",
-            "customerId",
             "id",
             "timeStart",
             "timeEnd",
@@ -309,7 +307,6 @@ class ProjectService implements IService {
         "timeStart",
         "timeEnd",
         "projectType",
-        "customerId",
         "id",
       ]);
       response.success = true;

@@ -12,8 +12,14 @@ import { MyworkingtimeDTO } from "../dto/request/myworkingtimeReq";
 import { getMyworkingtimeResDTO } from "../dto/response/myworkingtimeResponseDto";
 import { IResponse } from "../interfaces/responseInterface";
 import { getAllMyworkingtimeOfUser } from "../dto/response/getAll/getAllMyworkingtimeOfUser";
-import { approveMyworkingtimeResDTO, rejectMyworkingtimeResDTO } from "../dto/response/approveMyworkingtimeResDto";
+import {
+  approveMyworkingtimeResDTO,
+  rejectMyworkingtimeResDTO,
+} from "../dto/response/approveMyworkingtimeResDto";
 import { Branch, UserType } from "../type/userType";
+import { GetProjectsIncludingTasks } from "../dto/response/getAll/GetProjectsIncludingTasks";
+import projectUserRepository from "../repositories/projectUserRepository";
+import jwt_decode from "jwt-decode";
 
 class MyworkingtimeService implements IService {
   defaultMethod(
@@ -26,6 +32,7 @@ class MyworkingtimeService implements IService {
   private myworkingtimeRepository = myworkingtimeRepository;
   private projectRepository = ProjectRepository;
   private projectTaskRepository = ProjectTaskRepository;
+  private projectUserRepository = projectUserRepository;
   private taskRepository = taskRepository;
   private userRepository = userRepository;
   default = (req: Request, res: Response, next: NextFunction) => {};
@@ -42,9 +49,8 @@ class MyworkingtimeService implements IService {
     };
     try {
       if (myworkingtime.workingTime <= 8) {
-        let newMyworkingtime = await this.myworkingtimeRepository.createMyworkingtime(
-            myworkingtime
-        );
+        let newMyworkingtime =
+          await this.myworkingtimeRepository.createMyworkingtime(myworkingtime);
         newMyworkingtime = get(newMyworkingtime, [
           "projectTaskId",
           "note",
@@ -94,7 +100,7 @@ class MyworkingtimeService implements IService {
       if (myworkingtime.workingTime <= 8) {
         await this.myworkingtimeRepository.findById(myworkingtime.id);
         let editMyworkingtime = await this.myworkingtimeRepository.update(
-            myworkingtime
+          myworkingtime
         );
         editMyworkingtime = get(editMyworkingtime, [
           "projectTaskId",
@@ -130,7 +136,7 @@ class MyworkingtimeService implements IService {
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.query.id as string;
-    let response: IResponse= {
+    let response: IResponse = {
       result: null,
       targetUrl: null,
       success: false,
@@ -175,7 +181,9 @@ class MyworkingtimeService implements IService {
       __abp: true,
     };
     try {
-      let myworkingtime = await this.myworkingtimeRepository.findById(parseInt(id));
+      let myworkingtime = await this.myworkingtimeRepository.findById(
+        parseInt(id)
+      );
       myworkingtime = get(myworkingtime, [
         "projectTaskId",
         "note",
@@ -197,7 +205,7 @@ class MyworkingtimeService implements IService {
   };
 
   submitToPending = async (req: Request, res: Response, next: NextFunction) => {
-    let { startDate, endDate, userId } = req.body;
+    let { startDate, endDate } = req.body;
     let response: IResponse = {
       result: null,
       targetUrl: null,
@@ -207,15 +215,18 @@ class MyworkingtimeService implements IService {
       __abp: true,
     };
     try {
+      const decoded: any = jwt_decode(req.headers.authorization.split(" ")[1]);
+      const userId: number = decoded.id;
       let countMyworkingtime = 0;
-      let myworkingtime = await this.myworkingtimeRepository.getMyworkingtimeOfUser(
-        startDate,
-        endDate,
-        userId
-      );
+      let myworkingtime =
+        await this.myworkingtimeRepository.getMyworkingtimeOfUser(
+          startDate,
+          endDate,
+          userId
+        );
       for (let item of myworkingtime) {
         if (item.status == 0) {
-            countMyworkingtime++;
+          countMyworkingtime++;
           item.status = 1;
           await this.myworkingtimeRepository.update(item);
         }
@@ -300,27 +311,32 @@ class MyworkingtimeService implements IService {
       __abp: true,
     };
     try {
-      let workingtimes = await this.myworkingtimeRepository.getMyworkingtimeOfUser(
-        startDate.toString(),
-        endDate.toString(),
-        Number(userId)
-      );
+      let workingtimes =
+        await this.myworkingtimeRepository.getMyworkingtimeOfUser(
+          startDate.toString(),
+          endDate.toString(),
+          Number(userId)
+        );
       let result = [];
 
       for (let workingtime of workingtimes) {
         workingtime = get(workingtime, [
-          'id',
-          'projectTaskId',
-          'dateAt',
-          'workingTime',
-          'status',
-          'note',
-          'typeOfWork',
-          'isCharged',
-          'billable',
+          "id",
+          "projectTaskId",
+          "dateAt",
+          "workingTime",
+          "status",
+          "note",
+          "typeOfWork",
+          "isCharged",
+          "billable",
         ]);
-        let projectTask = await this.projectTaskRepository.findById(workingtime.projectTaskId);
-        let project = await this.projectRepository.findById(projectTask.projectId);
+        let projectTask = await this.projectTaskRepository.findById(
+          workingtime.projectTaskId
+        );
+        let project = await this.projectRepository.findById(
+          projectTask.projectId
+        );
         let task = await this.taskRepository.findById(projectTask.taskId);
         let getall = {
           ...workingtimes,
@@ -382,7 +398,11 @@ class MyworkingtimeService implements IService {
     }
   };
 
-  rejectWorkingtime = async (req: Request, res: Response, next: NextFunction) => {
+  rejectWorkingtime = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     let idReject = req.body;
     let response: rejectMyworkingtimeResDTO = {
       result: null,
@@ -416,7 +436,6 @@ class MyworkingtimeService implements IService {
     }
   };
 
-  
   getAll = async (req: Request, res: Response, next: NextFunction) => {
     let { startDate, endDate, status } = req.query;
     let response: getAllMyworkingtimeOfUser = {
@@ -429,18 +448,30 @@ class MyworkingtimeService implements IService {
     };
 
     try {
-      let myworkingtime = await this.myworkingtimeRepository.getAllMyworkingtime(
-        startDate.toString(),
-        endDate.toString(),
-        Number(status)
-      );
+      let myworkingtime =
+        await this.myworkingtimeRepository.getAllMyworkingtime(
+          startDate.toString(),
+          endDate.toString(),
+          Number(status)
+        );
 
       let result = [];
       for (let item of myworkingtime) {
         let user = await this.userRepository.findById(item.userId);
-        let myworkingtimes = get(item, ['id', 'dateAt', 'workingTime', 'status', 'typeOfWork', 'userId']);
-        let projectTask = await this.projectTaskRepository.findById(item.projectTaskId);
-        let project = await this.projectRepository.findById(projectTask.projectId);
+        let myworkingtimes = get(item, [
+          "id",
+          "dateAt",
+          "workingTime",
+          "status",
+          "typeOfWork",
+          "userId",
+        ]);
+        let projectTask = await this.projectTaskRepository.findById(
+          item.projectTaskId
+        );
+        let project = await this.projectRepository.findById(
+          projectTask.projectId
+        );
         let task = await this.taskRepository.findById(projectTask.taskId);
         let pms = await this.userRepository.getManageProject(project.id);
 
@@ -461,6 +492,64 @@ class MyworkingtimeService implements IService {
           user: user.name,
         });
       }
+      response = {
+        ...response,
+        success: true,
+        result: result,
+      };
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getProjectsInTasks = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    const decoded: any = jwt_decode(req.headers.authorization.split(" ")[1]);
+    const userId: number = decoded.id;
+    let response: GetProjectsIncludingTasks = {
+      result: null,
+      targetUrl: null,
+      success: false,
+      error: null,
+      unAuthRequest: false,
+      __abp: true,
+    };
+    try {
+      let result = [];
+      let projectUser = await this.projectUserRepository.findByUserId(+userId);
+      await Promise.all(
+        projectUser.map(async (item) => {
+          let project = await this.projectRepository.findById(item.projectId);
+
+          let projectTask = await this.projectTaskRepository.findByProjectId(
+            item.projectId
+          );
+          let pms = await this.userRepository.getManageProject(project.id);
+
+          let tasks = [];
+          await Promise.all(
+            projectTask.map(async (item) => {
+              let task = await this.taskRepository.findById(item.taskId);
+              if (task)
+                tasks.push({
+                  projectTaskId: task.id,
+                  taskName: task.name,
+                });
+            })
+          );
+          result.push({
+            projectName: project.name,
+            projectCode: project.code,
+            listPM: pms,
+            tasks: tasks,
+          });
+          return result;
+        })
+      );
       response = {
         ...response,
         success: true,

@@ -10,6 +10,5 @@ export interface IProject extends IBase, Document {
   timeStart: Date;
   timeEnd: Date;
   projectType: ProjectType;
-  customerId: number;
   note: string;
 }

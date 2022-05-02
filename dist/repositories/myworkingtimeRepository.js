@@ -67,7 +67,10 @@ class MyworkingtimeRepository extends BaseRepository_1.BaseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let getAllMyworkingtime = yield myworkingtimeModel_1.Myworkingtime.find({
-                    $and: [{ dateAt: { $gte: startDate } }, { dateAt: { $lte: endDate } }],
+                    $and: [
+                        { createdAt: { $gte: startDate } },
+                        { createdAt: { $lte: endDate } },
+                    ],
                     status,
                 });
                 return getAllMyworkingtime;
@@ -81,7 +84,10 @@ class MyworkingtimeRepository extends BaseRepository_1.BaseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let timesheet = yield myworkingtimeModel_1.Myworkingtime.find({
-                    $and: [{ dateAt: { $gte: startDate } }, { dateAt: { $lte: endDate } }],
+                    $and: [
+                        { createdAt: { $gte: startDate } },
+                        { createdAt: { $lte: endDate } },
+                    ],
                 });
                 return timesheet;
             }

@@ -22,9 +22,19 @@ class ProjectRouter extends BaseRouter {
     this.router.post("/Update", this.myworkingtimeService.update);
     this.router.delete("/Delete", this.myworkingtimeService.delete);
     this.router.get("/Get", this.myworkingtimeService.get);
-    this.router.post("/SubmitToPending", this.myworkingtimeService.submitToPending);
+    this.router.post(
+      "/SubmitToPending",
+      this.myworkingtimeService.submitToPending
+    );
     this.router.post("/SaveAndReset", this.myworkingtimeService.saveandreset);
-    this.router.get("/GetWorkingtimeOfUser", this.myworkingtimeService.getWorkingtimeOfUser);
+    this.router.get(
+      "/GetWorkingtimeOfUser",
+      this.myworkingtimeService.getWorkingtimeOfUser
+    );
+    this.router.get(
+      "/GetProjectsIncludingTasks",
+      this.myworkingtimeService.getProjectsInTasks
+    );
   }
 }
 

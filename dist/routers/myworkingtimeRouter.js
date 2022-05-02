@@ -21,6 +21,7 @@ class ProjectRouter extends baseRouter_1.BaseRouter {
         this.router.post("/SubmitToPending", this.myworkingtimeService.submitToPending);
         this.router.post("/SaveAndReset", this.myworkingtimeService.saveandreset);
         this.router.get("/GetWorkingtimeOfUser", this.myworkingtimeService.getWorkingtimeOfUser);
+        this.router.get("/GetProjectsIncludingTasks", this.myworkingtimeService.getProjectsInTasks);
     }
 }
 module.exports = new ProjectRouter().router;

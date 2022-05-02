@@ -25,6 +25,7 @@ const signJWT = (
       {
         username: user.userName,
         role: user.roleNames,
+        id: user.id,
       },
       config.server.token.secret,
       {

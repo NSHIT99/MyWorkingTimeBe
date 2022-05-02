@@ -1,5 +1,5 @@
 export enum status {
-  "All",
+  "Chưa gửi",
   "Chưa xác nhận",
   "Xác nhận",
   "Loại bỏ",

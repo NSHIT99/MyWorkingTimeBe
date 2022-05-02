@@ -52,7 +52,6 @@ class ProjectService {
                             "name",
                             "code",
                             "projectType",
-                            "customerId",
                             "id",
                             "timeStart",
                             "timeEnd",
@@ -91,7 +90,6 @@ class ProjectService {
                             "name",
                             "code",
                             "projectType",
-                            "customerId",
                             "id",
                             "timeStart",
                             "timeEnd",
@@ -246,7 +244,6 @@ class ProjectService {
                     "timeStart",
                     "timeEnd",
                     "projectType",
-                    "customerId",
                     "id",
                 ]);
                 response.success = true;

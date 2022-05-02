@@ -1,6 +1,9 @@
 import { Types } from "mongoose";
 import { IMyworkingtime } from "../interfaces/myworkingtimeInterface";
-import { Myworkingtime, MyworkingtimeSchema } from "../models/myworkingtimeModel";
+import {
+  Myworkingtime,
+  MyworkingtimeSchema,
+} from "../models/myworkingtimeModel";
 import { BaseRepository } from "./BaseRepository";
 
 class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
@@ -62,7 +65,10 @@ class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
   ) {
     try {
       let getAllMyworkingtime = await Myworkingtime.find({
-        $and: [{ dateAt: { $gte: startDate } }, { dateAt: { $lte: endDate } }],
+        $and: [
+          { createdAt: { $gte: startDate } },
+          { createdAt: { $lte: endDate } },
+        ],
         status,
       });
       return getAllMyworkingtime;
@@ -78,7 +84,10 @@ class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
   ): Promise<IMyworkingtime[]> {
     try {
       let timesheet = await Myworkingtime.find({
-        $and: [{ dateAt: { $gte: startDate } }, { dateAt: { $lte: endDate } }],
+        $and: [
+          { createdAt: { $gte: startDate } },
+          { createdAt: { $lte: endDate } },
+        ],
       });
       return timesheet;
     } catch (error) {

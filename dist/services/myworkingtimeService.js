@@ -18,11 +18,14 @@ const taskRepository_1 = __importDefault(require("../repositories/taskRepository
 const userRepository_1 = __importDefault(require("../repositories/userRepository"));
 const myworkingtimeRepository_1 = __importDefault(require("../repositories/myworkingtimeRepository"));
 const userType_1 = require("../type/userType");
+const projectUserRepository_1 = __importDefault(require("../repositories/projectUserRepository"));
+const jwt_decode_1 = __importDefault(require("jwt-decode"));
 class MyworkingtimeService {
     constructor() {
         this.myworkingtimeRepository = myworkingtimeRepository_1.default;
         this.projectRepository = ProjectRepository_1.default;
         this.projectTaskRepository = ProjectTaskRepository_1.default;
+        this.projectUserRepository = projectUserRepository_1.default;
         this.taskRepository = taskRepository_1.default;
         this.userRepository = userRepository_1.default;
         this.default = (req, res, next) => { };
@@ -165,7 +168,7 @@ class MyworkingtimeService {
             }
         });
         this.submitToPending = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            let { startDate, endDate, userId } = req.body;
+            let { startDate, endDate } = req.body;
             let response = {
                 result: null,
                 targetUrl: null,
@@ -175,6 +178,8 @@ class MyworkingtimeService {
                 __abp: true,
             };
             try {
+                const decoded = (0, jwt_decode_1.default)(req.headers.authorization.split(" ")[1]);
+                const userId = decoded.id;
                 let countMyworkingtime = 0;
                 let myworkingtime = yield this.myworkingtimeRepository.getMyworkingtimeOfUser(startDate, endDate, userId);
                 for (let item of myworkingtime) {
@@ -250,15 +255,15 @@ class MyworkingtimeService {
                 let result = [];
                 for (let workingtime of workingtimes) {
                     workingtime = (0, get_1.default)(workingtime, [
-                        'id',
-                        'projectTaskId',
-                        'dateAt',
-                        'workingTime',
-                        'status',
-                        'note',
-                        'typeOfWork',
-                        'isCharged',
-                        'billable',
+                        "id",
+                        "projectTaskId",
+                        "dateAt",
+                        "workingTime",
+                        "status",
+                        "note",
+                        "typeOfWork",
+                        "isCharged",
+                        "billable",
                     ]);
                     let projectTask = yield this.projectTaskRepository.findById(workingtime.projectTaskId);
                     let project = yield this.projectRepository.findById(projectTask.projectId);
@@ -356,13 +361,62 @@ class MyworkingtimeService {
                 let result = [];
                 for (let item of myworkingtime) {
                     let user = yield this.userRepository.findById(item.userId);
-                    let myworkingtimes = (0, get_1.default)(item, ['id', 'dateAt', 'workingTime', 'status', 'typeOfWork', 'userId']);
+                    let myworkingtimes = (0, get_1.default)(item, [
+                        "id",
+                        "dateAt",
+                        "workingTime",
+                        "status",
+                        "typeOfWork",
+                        "userId",
+                    ]);
                     let projectTask = yield this.projectTaskRepository.findById(item.projectTaskId);
                     let project = yield this.projectRepository.findById(projectTask.projectId);
                     let task = yield this.taskRepository.findById(projectTask.taskId);
                     let pms = yield this.userRepository.getManageProject(project.id);
                     result.push(Object.assign(Object.assign({ branch: user.branch, branchName: userType_1.Branch[user.branch] }, myworkingtimes), { isUserInProject: true, listPM: pms, mytimesheetNote: item.note, projectCode: project.code, project: project.id, projectName: project.name, taskId: task.id, task: task.name, type: userType_1.UserType[user.type], avatarPath: user.avatarPath, user: user.name }));
                 }
+                response = Object.assign(Object.assign({}, response), { success: true, result: result });
+                res.status(200).json(response);
+            }
+            catch (error) {
+                next(error);
+            }
+        });
+        this.getProjectsInTasks = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
+            const decoded = (0, jwt_decode_1.default)(req.headers.authorization.split(" ")[1]);
+            const userId = decoded.id;
+            let response = {
+                result: null,
+                targetUrl: null,
+                success: false,
+                error: null,
+                unAuthRequest: false,
+                __abp: true,
+            };
+            try {
+                let result = [];
+                let projectUser = yield this.projectUserRepository.findByUserId(+userId);
+                yield Promise.all(projectUser.map((item) => __awaiter(this, void 0, void 0, function* () {
+                    let project = yield this.projectRepository.findById(item.projectId);
+                    let projectTask = yield this.projectTaskRepository.findByProjectId(item.projectId);
+                    let pms = yield this.userRepository.getManageProject(project.id);
+                    let tasks = [];
+                    yield Promise.all(projectTask.map((item) => __awaiter(this, void 0, void 0, function* () {
+                        let task = yield this.taskRepository.findById(item.taskId);
+                        if (task)
+                            tasks.push({
+                                projectTaskId: task.id,
+                                taskName: task.name,
+                            });
+                    })));
+                    result.push({
+                        projectName: project.name,
+                        projectCode: project.code,
+                        listPM: pms,
+                        tasks: tasks,
+                    });
+                    return result;
+                })));
                 response = Object.assign(Object.assign({}, response), { success: true, result: result });
                 res.status(200).json(response);
             }
