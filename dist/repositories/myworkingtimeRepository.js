@@ -15,10 +15,10 @@ class MyworkingtimeRepository extends BaseRepository_1.BaseRepository {
     constructor() {
         super("Myworkingtime", myworkingtimeModel_1.MyworkingtimeSchema);
     }
-    createMyworkingtime(myworkingtime) {
+    createMyworkingtime(myworkingtime, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             let id = (yield this.lastId()) + 1;
-            let newMyworkingtime = new myworkingtimeModel_1.Myworkingtime(Object.assign(Object.assign({ _id: mongoose_1.Types.ObjectId() }, myworkingtime), { status: 0, id }));
+            let newMyworkingtime = new myworkingtimeModel_1.Myworkingtime(Object.assign(Object.assign({ _id: mongoose_1.Types.ObjectId() }, myworkingtime), { status: 0, userId: userId, id }));
             try {
                 yield newMyworkingtime.save();
                 return this.findById(id);
@@ -66,11 +66,11 @@ class MyworkingtimeRepository extends BaseRepository_1.BaseRepository {
     getAllMyworkingtime(startDate, endDate, status) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const start = new Date(startDate).getHours;
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 59);
                 let getAllMyworkingtime = yield myworkingtimeModel_1.Myworkingtime.find({
-                    $and: [
-                        { createdAt: { $gte: startDate } },
-                        { createdAt: { $lte: endDate } },
-                    ],
+                    $and: [{ dateAt: { $gte: start } }, { dateAt: { $lte: end } }],
                     status,
                 });
                 return getAllMyworkingtime;
@@ -83,10 +83,14 @@ class MyworkingtimeRepository extends BaseRepository_1.BaseRepository {
     getMyworkingtimeOfUser(startDate, endDate, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                end.setHours(23, 59, 59, 59);
                 let timesheet = yield myworkingtimeModel_1.Myworkingtime.find({
                     $and: [
-                        { createdAt: { $gte: startDate } },
-                        { createdAt: { $lte: endDate } },
+                        { dateAt: { $gte: start } },
+                        { dateAt: { $lte: end } },
+                        { userId: userId },
                     ],
                 });
                 return timesheet;

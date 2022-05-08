@@ -48,9 +48,14 @@ class MyworkingtimeService implements IService {
       __abp: true,
     };
     try {
+      const decoded: any = jwt_decode(req.headers.authorization.split(" ")[1]);
+      const userId: number = decoded.id;
       if (myworkingtime.workingTime <= 8) {
         let newMyworkingtime =
-          await this.myworkingtimeRepository.createMyworkingtime(myworkingtime);
+          await this.myworkingtimeRepository.createMyworkingtime(
+            myworkingtime,
+            userId
+          );
         newMyworkingtime = get(newMyworkingtime, [
           "projectTaskId",
           "note",
@@ -301,7 +306,7 @@ class MyworkingtimeService implements IService {
     res: Response,
     next: NextFunction
   ) => {
-    let { startDate, endDate, userId } = req.query;
+    let { startDate, endDate } = req.query;
     let response: getAllMyworkingtimeOfUser = {
       result: null,
       targetUrl: null,
@@ -311,6 +316,8 @@ class MyworkingtimeService implements IService {
       __abp: true,
     };
     try {
+      const decoded: any = jwt_decode(req.headers.authorization.split(" ")[1]);
+      const userId: number = decoded.id;
       let workingtimes =
         await this.myworkingtimeRepository.getMyworkingtimeOfUser(
           startDate.toString(),
@@ -339,7 +346,7 @@ class MyworkingtimeService implements IService {
         );
         let task = await this.taskRepository.findById(projectTask.taskId);
         let getall = {
-          ...workingtimes,
+          working: workingtimes,
           projectName: project.name,
           taskName: task.name,
           projectCode: project.code,

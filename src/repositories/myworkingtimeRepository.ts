@@ -12,13 +12,15 @@ class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
   }
 
   public async createMyworkingtime(
-    myworkingtime: IMyworkingtime
+    myworkingtime: IMyworkingtime,
+    userId: any
   ): Promise<IMyworkingtime> {
     let id = (await this.lastId()) + 1;
     let newMyworkingtime: IMyworkingtime = new Myworkingtime({
       _id: Types.ObjectId(),
       ...myworkingtime,
       status: 0,
+      userId: userId,
       id,
     });
     try {
@@ -64,11 +66,11 @@ class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
     status: number
   ) {
     try {
+      const start: any = new Date(startDate).getHours;
+      const end: any = new Date(endDate);
+      end.setHours(23, 59, 59, 59);
       let getAllMyworkingtime = await Myworkingtime.find({
-        $and: [
-          { createdAt: { $gte: startDate } },
-          { createdAt: { $lte: endDate } },
-        ],
+        $and: [{ dateAt: { $gte: start } }, { dateAt: { $lte: end } }],
         status,
       });
       return getAllMyworkingtime;
@@ -83,10 +85,14 @@ class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
     userId: number
   ): Promise<IMyworkingtime[]> {
     try {
+      const start: any = new Date(startDate);
+      const end: any = new Date(endDate);
+      end.setHours(23, 59, 59, 59);
       let timesheet = await Myworkingtime.find({
         $and: [
-          { createdAt: { $gte: startDate } },
-          { createdAt: { $lte: endDate } },
+          { dateAt: { $gte: start } },
+          { dateAt: { $lte: end } },
+          { userId: userId },
         ],
       });
       return timesheet;

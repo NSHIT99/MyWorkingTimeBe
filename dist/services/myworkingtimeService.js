@@ -40,8 +40,10 @@ class MyworkingtimeService {
                 __abp: true,
             };
             try {
+                const decoded = (0, jwt_decode_1.default)(req.headers.authorization.split(" ")[1]);
+                const userId = decoded.id;
                 if (myworkingtime.workingTime <= 8) {
-                    let newMyworkingtime = yield this.myworkingtimeRepository.createMyworkingtime(myworkingtime);
+                    let newMyworkingtime = yield this.myworkingtimeRepository.createMyworkingtime(myworkingtime, userId);
                     newMyworkingtime = (0, get_1.default)(newMyworkingtime, [
                         "projectTaskId",
                         "note",
@@ -241,7 +243,7 @@ class MyworkingtimeService {
             }
         });
         this.getWorkingtimeOfUser = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            let { startDate, endDate, userId } = req.query;
+            let { startDate, endDate } = req.query;
             let response = {
                 result: null,
                 targetUrl: null,
@@ -251,6 +253,8 @@ class MyworkingtimeService {
                 __abp: true,
             };
             try {
+                const decoded = (0, jwt_decode_1.default)(req.headers.authorization.split(" ")[1]);
+                const userId = decoded.id;
                 let workingtimes = yield this.myworkingtimeRepository.getMyworkingtimeOfUser(startDate.toString(), endDate.toString(), Number(userId));
                 let result = [];
                 for (let workingtime of workingtimes) {
@@ -268,7 +272,13 @@ class MyworkingtimeService {
                     let projectTask = yield this.projectTaskRepository.findById(workingtime.projectTaskId);
                     let project = yield this.projectRepository.findById(projectTask.projectId);
                     let task = yield this.taskRepository.findById(projectTask.taskId);
-                    let getall = Object.assign(Object.assign({}, workingtimes), { projectName: project.name, taskName: task.name, projectCode: project.code, billable: projectTask.billable });
+                    let getall = {
+                        working: workingtimes,
+                        projectName: project.name,
+                        taskName: task.name,
+                        projectCode: project.code,
+                        billable: projectTask.billable,
+                    };
                     result.push(getall);
                 }
                 response = Object.assign(Object.assign({}, response), { result: result, success: true });
