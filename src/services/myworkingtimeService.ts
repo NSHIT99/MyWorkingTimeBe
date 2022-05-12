@@ -370,7 +370,7 @@ class MyworkingtimeService implements IService {
     res: Response,
     next: NextFunction
   ) => {
-    let idApprove = req.body;
+    let { idApprove } = req.body;
     let response: approveMyworkingtimeResDTO = {
       result: null,
       targetUrl: null,
@@ -410,7 +410,7 @@ class MyworkingtimeService implements IService {
     res: Response,
     next: NextFunction
   ) => {
-    let idReject = req.body;
+    let { idReject } = req.body;
     let response: rejectMyworkingtimeResDTO = {
       result: null,
       targetUrl: null,

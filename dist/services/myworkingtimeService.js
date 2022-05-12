@@ -289,7 +289,7 @@ class MyworkingtimeService {
             }
         });
         this.approveWorkingtime = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            let idApprove = req.body;
+            let { idApprove } = req.body;
             let response = {
                 result: null,
                 targetUrl: null,
@@ -324,7 +324,7 @@ class MyworkingtimeService {
             }
         });
         this.rejectWorkingtime = (req, res, next) => __awaiter(this, void 0, void 0, function* () {
-            let idReject = req.body;
+            let { idReject } = req.body;
             let response = {
                 result: null,
                 targetUrl: null,

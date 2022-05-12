@@ -66,7 +66,7 @@ class MyworkingtimeRepository extends BaseRepository<IMyworkingtime> {
     status: number
   ) {
     try {
-      const start: any = new Date(startDate).getHours;
+      const start: any = new Date(startDate);
       const end: any = new Date(endDate);
       end.setHours(23, 59, 59, 59);
       let getAllMyworkingtime = await Myworkingtime.find({

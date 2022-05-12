@@ -66,7 +66,7 @@ class MyworkingtimeRepository extends BaseRepository_1.BaseRepository {
     getAllMyworkingtime(startDate, endDate, status) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const start = new Date(startDate).getHours;
+                const start = new Date(startDate);
                 const end = new Date(endDate);
                 end.setHours(23, 59, 59, 59);
                 let getAllMyworkingtime = yield myworkingtimeModel_1.Myworkingtime.find({
