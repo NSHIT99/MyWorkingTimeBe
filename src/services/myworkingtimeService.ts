@@ -234,6 +234,7 @@ class MyworkingtimeService implements IService {
           countMyworkingtime++;
           item.status = 1;
           await this.myworkingtimeRepository.update(item);
+          await this.projectTaskRepository.findAndUpdate(item.projectTaskId);
         }
       }
       response = {
@@ -543,6 +544,7 @@ class MyworkingtimeService implements IService {
               let task = await this.taskRepository.findById(item.taskId);
               if (task)
                 tasks.push({
+                  confirm: item.confirm,
                   projectTaskId: task.id,
                   taskName: task.name,
                 });

@@ -18,12 +18,12 @@ class ProjectRouter extends BaseRouter {
    * Connect routes to their matching projectService endpoints.
    */
   protected init() {
-    this.router.post("/Save", this.projectService.Save);
-    this.router.delete("/Delete", this.projectService.Delete);
-    this.router.post("/Active", this.projectService.active);
-    this.router.post("/Inactive", this.projectService.Inactive);
-    this.router.get("/getAll", this.projectService.getAll);
-    this.router.get("/get", this.projectService.get);
+    this.router.post("/Save", authen, this.projectService.Save);
+    this.router.delete("/Delete", authen, this.projectService.Delete);
+    this.router.post("/Active", authen, this.projectService.active);
+    this.router.post("/Inactive", authen, this.projectService.Inactive);
+    this.router.get("/getAll", authen, this.projectService.getAll);
+    this.router.get("/get", authen, this.projectService.get);
   }
 }
 

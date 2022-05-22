@@ -13,6 +13,8 @@ export interface GetProjectResDTO extends IResponse {
       taskId: number;
       billable: boolean;
       id: number;
+      timeStartTask: Date;
+      timeEndTask: Date;
     }[];
     users: {
       userId: number;

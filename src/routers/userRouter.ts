@@ -18,19 +18,23 @@ class UserRouter extends BaseRouter {
    * Connect routes to their matching controller endpoints.
    */
   protected init() {
-    this.router.post("/CreateUser", this.userService.createUser);
-    this.router.put("/UpdateUser", this.userService.updateUser);
-    this.router.delete("/DeleteUser", this.userService.deleteUser);
-    this.router.get("/GetAllPagging", this.userService.getAllPagging);
-    this.router.get("/GetAll", this.userService.getAll);
+    this.router.post("/CreateUser", authen, this.userService.createUser);
+    this.router.put("/UpdateUser", authen, this.userService.updateUser);
+    this.router.delete("/DeleteUser", authen, this.userService.deleteUser);
+    this.router.get("/GetAllPagging", authen, this.userService.getAllPagging);
+    this.router.get("/GetAll", authen, this.userService.getAll);
     this.router.post(
       "/createAvatar",
       mp3.single("File"),
       this.userService.createAvatar
     );
-    this.router.post("/UpdateAvatar", this.userService.updateAvatar);
-    this.router.post("/ResetPassword", this.userService.resetPassword);
-    this.router.get("/GetUserNotPagging", this.userService.getUserNotPagging);
+    this.router.post("/UpdateAvatar", authen, this.userService.updateAvatar);
+    this.router.post("/ResetPassword", authen, this.userService.resetPassword);
+    this.router.get(
+      "/GetUserNotPagging",
+      authen,
+      this.userService.getUserNotPagging
+    );
   }
 }
 

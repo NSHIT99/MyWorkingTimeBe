@@ -21,8 +21,7 @@ export const MyworkingtimeSchema: Schema = new Schema(
   }
 );
 
-export const Myworkingtime: IMyworkingtimeModel = model<IMyworkingtime, IMyworkingtimeModel>(
-  "Myworkingtime",
-  MyworkingtimeSchema,
-  "myworkingtimes"
-);
+export const Myworkingtime: IMyworkingtimeModel = model<
+  IMyworkingtime,
+  IMyworkingtimeModel
+>("Myworkingtime", MyworkingtimeSchema, "myworkingtimes");

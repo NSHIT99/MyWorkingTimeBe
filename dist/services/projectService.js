@@ -40,7 +40,7 @@ class ProjectService {
                         yield this.projectTaskRepository.deleteTaskProject(project.id);
                         yield this.projectUserRepository.deleteUserProject(project.id);
                         for (let task of tasks) {
-                            yield this.projectTaskRepository.createProjectTask(task.taskId, task.projectId, task.billable);
+                            yield this.projectTaskRepository.createProjectTask(task.taskId, task.projectId, task.billable, task.timeStartTask, task.timeEndTask);
                         }
                         for (let user of users) {
                             yield this.projectUserRepository.createProjectUser(user.projectId, user.userId, user.type);
@@ -61,6 +61,8 @@ class ProjectService {
                                         id: task.id,
                                         taskId: task.taskId,
                                         billable: task.billable,
+                                        timeStartTask: task.timeStartTask,
+                                        timeEndTask: task.timeEndTask,
                                     };
                                 }), users: users.map((user) => {
                                     return {
@@ -95,7 +97,7 @@ class ProjectService {
                             "timeEnd",
                         ]);
                         for (let task of tasks) {
-                            yield this.projectTaskRepository.createProjectTask(task.taskId, createProject.id, task.billable);
+                            yield this.projectTaskRepository.createProjectTask(task.taskId, createProject.id, task.billable, task.timeStartTask, task.timeEndTask);
                         }
                         for (let user of users) {
                             yield this.projectUserRepository.createProjectUser(user.userId, createProject.id, user.type);
@@ -105,6 +107,8 @@ class ProjectService {
                                         id: task.id,
                                         taskId: task.taskId,
                                         billable: task.billable,
+                                        timeStartTask: task.timeStartTask,
+                                        timeEndTask: task.timeEndTask,
                                     };
                                 }), users: users.map((user) => {
                                     return {
@@ -252,6 +256,8 @@ class ProjectService {
                             id: task.id,
                             taskId: task.taskId,
                             billable: task.billable,
+                            timeStartTask: task.timeStartTask,
+                            timeEndTask: task.timeEndTask,
                         };
                     }), users: users.map((user) => {
                         return {

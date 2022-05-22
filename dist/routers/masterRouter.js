@@ -11,6 +11,7 @@ const taskRouter = require("./taskRouter");
 const projectRouter = require("./projectRouter");
 const myworkingtimeRouter = require("./myworkingtimeRouter");
 const workingtimeRouter = require("./workingtimeRouter");
+const commentRouter = require("./commentRouter");
 class MasterRouter extends baseRouter_1.BaseRouter {
     constructor() {
         super();
@@ -31,11 +32,12 @@ class MasterRouter extends baseRouter_1.BaseRouter {
         this.router.use("/services/app", authLoginRouter_1.default);
         this.router.use("/TokenAuth", authLoginRouter_1.default);
         this.router.use("/User", userRouter);
-        this.router.use('/Role', roleRouter);
-        this.router.use('/Task', taskRouter);
-        this.router.use('/Project', projectRouter);
-        this.router.use('/Myworkingtime', myworkingtimeRouter);
-        this.router.use('/Workingtime', workingtimeRouter);
+        this.router.use("/Role", roleRouter);
+        this.router.use("/Task", taskRouter);
+        this.router.use("/Project", projectRouter);
+        this.router.use("/Myworkingtime", myworkingtimeRouter);
+        this.router.use("/Workingtime", workingtimeRouter);
+        this.router.use("/Comment", commentRouter);
     }
 }
 module.exports = new MasterRouter().router;

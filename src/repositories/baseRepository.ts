@@ -71,6 +71,12 @@ export class BaseRepository<T extends IBase> implements IMethod<T>, IModel<T> {
     } catch (error) {}
   }
 
+  public async findByIdWorkingtime(idWorkingtime: number): Promise<T> {
+    try {
+      return await this.model.findOne({ idWorkingtime: idWorkingtime });
+    } catch (error) {}
+  }
+
   public async SaveAndUpdate(item: T): Promise<T> {
     try {
       await this.model.updateOne({ id: item.id }, item);

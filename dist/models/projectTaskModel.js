@@ -8,6 +8,9 @@ exports.ProjectTaskSchema = new mongoose_1.Schema({
     taskId: { type: Number },
     billable: { type: Boolean },
     id: { type: Number },
+    timeStartTask: { type: Date, default: Date.now },
+    timeEndTask: { type: Date, default: Date.now },
+    confirm: { type: Boolean, default: false },
 }, {
     timestamps: true,
 });

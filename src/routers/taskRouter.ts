@@ -17,11 +17,11 @@ class TaskRouter extends BaseRouter {
    * Connect routes to their matching controller endpoints.
    */
   protected init() {
-    this.router.get("/GetAll", this.taskService.getAll);
-    this.router.post("/Save", this.taskService.Save);
-    this.router.delete("/Delete", this.taskService.Delete);
-    this.router.delete("/Archive", this.taskService.archive);
-    this.router.post("/DeArchive", this.taskService.deArchive)
+    this.router.get("/GetAll", authen, this.taskService.getAll);
+    this.router.post("/Save", authen, this.taskService.Save);
+    this.router.delete("/Delete", authen, this.taskService.Delete);
+    this.router.delete("/Archive", authen, this.taskService.archive);
+    this.router.post("/DeArchive", authen, this.taskService.deArchive);
   }
 }
 

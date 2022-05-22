@@ -46,7 +46,9 @@ class ProjectService implements IService {
             await this.projectTaskRepository.createProjectTask(
               task.taskId,
               task.projectId,
-              task.billable
+              task.billable,
+              task.timeStartTask,
+              task.timeEndTask
             );
           }
 
@@ -78,6 +80,8 @@ class ProjectService implements IService {
                   id: task.id,
                   taskId: task.taskId,
                   billable: task.billable,
+                  timeStartTask: task.timeStartTask,
+                  timeEndTask: task.timeEndTask,
                 };
               }),
               users: users.map((user) => {
@@ -122,7 +126,9 @@ class ProjectService implements IService {
             await this.projectTaskRepository.createProjectTask(
               task.taskId,
               createProject.id,
-              task.billable
+              task.billable,
+              task.timeStartTask,
+              task.timeEndTask
             );
           }
 
@@ -142,6 +148,8 @@ class ProjectService implements IService {
                   id: task.id,
                   taskId: task.taskId,
                   billable: task.billable,
+                  timeStartTask: task.timeStartTask,
+                  timeEndTask: task.timeEndTask,
                 };
               }),
               users: users.map((user) => {
@@ -317,6 +325,8 @@ class ProjectService implements IService {
             id: task.id,
             taskId: task.taskId,
             billable: task.billable,
+            timeStartTask: task.timeStartTask,
+            timeEndTask: task.timeEndTask,
           };
         }),
         users: users.map((user) => {

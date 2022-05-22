@@ -7,6 +7,7 @@ export interface GetProjectsIncludingTasks extends IResponse {
     projectCode: string;
     listPM: string[];
     tasks: {
+      confirm: boolean;
       projectTaskId: number;
       taskName: string;
     }[];

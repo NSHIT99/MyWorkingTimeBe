@@ -15,7 +15,7 @@ class ProjectTaskRepository extends baseRepository_1.BaseRepository {
     constructor() {
         super("ProjectTask", projectTaskModel_1.ProjectTaskSchema);
     }
-    createProjectTask(taskId, projectId, billable) {
+    createProjectTask(taskId, projectId, billable, timeStartTask, timeEndTask) {
         return __awaiter(this, void 0, void 0, function* () {
             const id = (yield this.lastId()) + 1;
             const newProjectTask = new projectTaskModel_1.ProjectTask({
@@ -24,6 +24,8 @@ class ProjectTaskRepository extends baseRepository_1.BaseRepository {
                 taskId,
                 billable,
                 id,
+                timeStartTask,
+                timeEndTask,
             });
             try {
                 yield newProjectTask.save();
@@ -60,6 +62,20 @@ class ProjectTaskRepository extends baseRepository_1.BaseRepository {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield projectTaskModel_1.ProjectTask.findById({ taskId });
+                return true;
+            }
+            catch (error) {
+                throw error;
+            }
+        });
+    }
+    findAndUpdate(taskId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const checkId = yield projectTaskModel_1.ProjectTask.find({ taskId });
+                checkId.map((item) => __awaiter(this, void 0, void 0, function* () {
+                    yield projectTaskModel_1.ProjectTask.findByIdAndUpdate({ _id: item._id }, { confirm: true });
+                }));
                 return true;
             }
             catch (error) {

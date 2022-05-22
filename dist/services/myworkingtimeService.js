@@ -189,6 +189,7 @@ class MyworkingtimeService {
                         countMyworkingtime++;
                         item.status = 1;
                         yield this.myworkingtimeRepository.update(item);
+                        yield this.projectTaskRepository.findAndUpdate(item.projectTaskId);
                     }
                 }
                 response = Object.assign(Object.assign({}, response), { success: true, result: `Submit success ${countMyworkingtime} timesheets` });
@@ -415,6 +416,7 @@ class MyworkingtimeService {
                         let task = yield this.taskRepository.findById(item.taskId);
                         if (task)
                             tasks.push({
+                                confirm: item.confirm,
                                 projectTaskId: task.id,
                                 taskName: task.name,
                             });

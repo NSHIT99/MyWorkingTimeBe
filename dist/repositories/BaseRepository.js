@@ -87,6 +87,14 @@ class BaseRepository {
             catch (error) { }
         });
     }
+    findByIdWorkingtime(idWorkingtime) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield this.model.findOne({ idWorkingtime: idWorkingtime });
+            }
+            catch (error) { }
+        });
+    }
     SaveAndUpdate(item) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

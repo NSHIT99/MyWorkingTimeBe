@@ -17,10 +17,10 @@ class RoleRouter extends BaseRouter {
    * Connect routes to their matching controller endpoints.
    */
   protected init() {
-    this.router.post("/Create", this.roleService.create);
-    this.router.post("/Update", this.roleService.update);
-    this.router.delete("/Delete", this.roleService.delete);
-    this.router.get("/GetAll", this.roleService.getAll);
+    this.router.post("/Create", authen, this.roleService.create);
+    this.router.post("/Update", authen, this.roleService.update);
+    this.router.delete("/Delete", authen, this.roleService.delete);
+    this.router.get("/GetAll", authen, this.roleService.getAll);
   }
 }
 
